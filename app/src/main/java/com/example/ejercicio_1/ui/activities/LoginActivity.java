@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ejercicio_1.PantallaPrincipalActivity;
 import com.example.ejercicio_1.R;
-import com.example.ejercicio_1.repos.FirebaseHandler;
+import com.example.ejercicio_1.repos.firebase.FirebaseHandler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 

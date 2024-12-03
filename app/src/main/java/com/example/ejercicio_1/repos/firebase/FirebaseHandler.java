@@ -1,12 +1,10 @@
-package com.example.ejercicio_1.repos;
+package com.example.ejercicio_1.repos.firebase;
 
 import android.util.Log;
 
 import com.example.ejercicio_1.model.*;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.*;
-
-import java.util.UUID;
 
 public class FirebaseHandler {
     private FirebaseFirestore db;
@@ -63,4 +61,13 @@ public class FirebaseHandler {
                 .get()
                 .addOnCompleteListener(listener);
     }
+
+    public void guardarUbicacion(String userId, Ubicacion ubicacion, OnCompleteListener<Void> listener) {
+        db.collection("ubicaciones")
+                .document(userId)
+                .set(ubicacion)
+                .addOnCompleteListener(listener)
+                .addOnFailureListener(e -> Log.e("FirebaseHandler", "Error al guardar ubicación", e));
+    }
+
 }

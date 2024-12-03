@@ -1,0 +1,40 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Día (YYYY-MM-DD)"
+        android:inputType="date"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/etTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Hora (HH:MM)"
+        android:inputType="time"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/etSubject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Asignatura"
+        android:inputType="textCapWords"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnSaveActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guardar Actividad"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#6200EE"
+        android:padding="12dp" />
+</LinearLayout>
