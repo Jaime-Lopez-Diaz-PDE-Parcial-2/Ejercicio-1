@@ -72,18 +72,22 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
     }
 
     private void setupNavigationView() {
-        findViewById(R.id.nav_add_activity).setOnClickListener(v -> {
+        navigationView.findViewById(R.id.nav_add_activity).setOnClickListener(v -> {
             startActivity(new Intent(this, AddActivity.class));
+            drawerLayout.closeDrawer(GravityCompat.START);
         });
 
-        findViewById(R.id.nav_calendar).setOnClickListener(v -> {
+        navigationView.findViewById(R.id.nav_calendar).setOnClickListener(v -> {
             startActivity(new Intent(this, CalendarActivity.class));
+            drawerLayout.closeDrawer(GravityCompat.START);
         });
 
-        findViewById(R.id.nav_current_tasks).setOnClickListener(v -> {
+        navigationView.findViewById(R.id.nav_current_tasks).setOnClickListener(v -> {
             startActivity(new Intent(this, CurrentTasksActivity.class));
+            drawerLayout.closeDrawer(GravityCompat.START);
         });
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
