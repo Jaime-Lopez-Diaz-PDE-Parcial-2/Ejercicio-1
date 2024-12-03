@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -48,20 +49,20 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigationView);
         btnLogout = findViewById(R.id.btnLogout);
 
+        // Inicializar FirebaseHandler
+        firebaseHandler = new FirebaseHandler(); // Asegúrate de que no sea null aquí
+
         // Configurar el ActionBarDrawerToggle
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Importante para que el ícono del menú se muestre
 
         // Configurar el listener de navegación
         setupNavigationView();
 
-        // Inicializar Firebase y la ubicación
-        firebaseHandler = new FirebaseHandler();
+        // Inicializar ubicación
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        // Pedir permisos de ubicación
         checkLocationPermission();
 
         btnLogout.setOnClickListener(v -> {
@@ -72,9 +73,31 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
     }
 
     private void setupNavigationView() {
-        navigationView.findViewById(R.id.nav_add_activity).setOnClickListener(v -> {
-            startActivity(new Intent(this, AddActivity.class));
-            drawerLayout.closeDrawer(GravityCompat.START);
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Obtener el usuario de Firebase
+        firebaseHandler.obtenerUsuario(userId, task -> {
+            if (task.isSuccessful() && task.getResult().exists()) {
+                Usuario usuario = task.getResult().toObject(Usuario.class);
+
+                if (usuario != null) {
+                    // Validar el rol
+                    if ("Administrador".equals(usuario.getRol())) { // Solo visible para administradores
+                        navigationView.findViewById(R.id.nav_add_activity).setVisibility(View.VISIBLE);
+                        navigationView.findViewById(R.id.nav_add_activity).setOnClickListener(v -> {
+                            startActivity(new Intent(this, AddActivity.class));
+                            drawerLayout.closeDrawer(GravityCompat.START);
+                        });
+                    } else {
+                        // Ocultar el acceso si no es administrador
+                        navigationView.findViewById(R.id.nav_add_activity).setVisibility(View.GONE);
+                    }
+                } else {
+                    Toast.makeText(this, "Error al cargar la información del usuario.", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "No se pudo obtener la información del usuario.", Toast.LENGTH_SHORT).show();
+            }
         });
 
         navigationView.findViewById(R.id.nav_calendar).setOnClickListener(v -> {
@@ -87,7 +110,6 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
         });
     }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
